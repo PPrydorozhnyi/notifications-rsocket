@@ -1,0 +1,38 @@
+server:
+  http2.enabled: true #HPACK Compression
+  compression:
+    enabled: true #starting from 2KB - min size of data frame. A frame is usually less than 2^14 bits but can be up to 2^24 bits
+  port: 8081
+
+spring:
+  main:
+    lazy-initialization: true
+  rsocket:
+    server:
+      transport: websocket
+      mapping-path: /rsocket
+      port: 8090
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      password: password123
+      notifications-topic: notifications:queue
+      notification-checked-topic: notification.checked:queue
+      active-user-topic: active.user:queue
+
+token:
+  issuer: local-peto
+  public-key: public-key-retrieved-from-amazon-secrets
+
+app:
+  user:
+    update:
+      cron: "0 */5 * ? * *"
+
+management:
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
